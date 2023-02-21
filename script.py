@@ -39,8 +39,4 @@ def popUps():
     root.after(1000, root.destroy)
     root.mainloop()
 
-start_time = time.time()
-interval = 1
-for i in range(20):
-    time.sleep(start_time + i*interval - time.time())
-    popUps()
+popUps()
