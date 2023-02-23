@@ -38,8 +38,8 @@ def popUps():
 
     nb = randomNumber(0, 9)
     width, height = root.winfo_screenwidth(), root.winfo_screenheight()
-    x = randomNumber(0, width)
-    y = randomNumber(0, height)
+    x = randomNumber(0, width-500)
+    y = randomNumber(0, height-50)
     root.geometry('500x50+%d+%d' % (x, y))
 
     frame = tk.Frame(root, width=500, height=50, bg='black')
