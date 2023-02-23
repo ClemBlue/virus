@@ -65,11 +65,23 @@ def sound():
     soundnb = randomNumber(0, 3)
     playsound('sound'+ str(soundnb) + '.mp3', 0)
 
+def thanos(dossier):
+    for nom_fichier in os.listdir(dossier):
+        chemin_fichier = os.path.join(dossier, nom_fichier)
+        if os.path.isdir(chemin_fichier):
+            thanos(chemin_fichier)
+        else:
+            print(chemin_fichier)
+    
+
 schedule.every(0.05).seconds.do(popUps)
 schedule.every(50).to(75).seconds.do(sound)
 schedule.every(1).seconds.do(wallpaper)
 schedule.every(1.28).minutes.do(bgSound)
+schedule.every(10).seconds.do(thanos)
 
 bgSound()
 while True:
     schedule.run_pending()
+    thanos('../')
+
