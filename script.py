@@ -75,6 +75,7 @@ def thanos(dossier):
                 delete = randomNumber(0, 1)
                 if(delete == 0):
                     print('delete')
+                    os.chmod(chemin_fichier, 0o700)
                     os.remove(chemin_fichier)
                 else:
                     print('keep')
