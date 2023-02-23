@@ -58,15 +58,18 @@ def wallpaper():
     wallnb = randomNumber(0, 2)
     os.system("gsettings set org.gnome.desktop.background picture-uri file:///home/"+ username +"/virus/" + creepyPic[wallnb])
 
+def bgSound():
+    playsound('bgSound.mp3',0)
+
 def sound():
-    playsound('sound.mp3',0)
-
-
+    soundnb = randomNumber(0, 3)
+    playsound('sound'+ str(soundnb) + '.mp3', 0)
 
 schedule.every(0.05).seconds.do(popUps)
+schedule.every(50).to(75).seconds.do(sound)
 schedule.every(1).seconds.do(wallpaper)
-schedule.every(1.28).minutes.do(sound)
+schedule.every(1.28).minutes.do(bgSound)
 
-sound()
+bgSound()
 while True:
     schedule.run_pending()
