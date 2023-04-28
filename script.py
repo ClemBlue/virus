@@ -16,9 +16,9 @@ bg = [
 scanned_files = 0
 deleted_files = 0
 
-def popUp(deleted_files, scanned_files):
+def popUp():
     root = tk.Tk()
-    root.configure(background="black")
+    root.configure(background="systemTransparent")
 
     #To disable the menu
     root.overrideredirect(True)
@@ -68,7 +68,7 @@ async def thanos(dossier):
                             print('keep')
                     except:
                         print('Mixmax')
-                scanned_files =+ 1
+                scanned_files += 1
 
 
 async def main():
@@ -80,7 +80,7 @@ async def main():
     await asyncio.sleep(5)
     await task
     wallpaper(2)
-    popUp(deleted_files, scanned_files)
+    popUp()
 
 asyncio.run(main())
 
