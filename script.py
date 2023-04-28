@@ -52,7 +52,7 @@ async def thanos(dossier):
     global scanned_files
     delete_count = 0
 
-    for nom_fichier in enumerate(os.scandir(dossier)):
+    for nom_fichier in os.scandir(dossier):
         if nom_fichier.name != 'virus':
             if nom_fichier.is_dir():
                 await thanos(nom_fichier.path)
